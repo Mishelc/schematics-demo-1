@@ -54,12 +54,7 @@ variable "zone2_subnet2" {
 }
 
 variable "ssh_public_key" {
-  default = "AAAAB3NzaC1yc2EAAAABJQAAAQEAmuhJuR9by62GlICEhd5wireNcTQVpyXvD6TP
-xg87X9oDvgzK/0v5PzQs4yc3nNWRfSkbo9KFX1ML/8jmrO6M8yYiKN2RYKWGua0C
-HDNphYxqE9EfnK6NiJ8k/20ZikH6b0KbRi3e7FYRqF8qjD9NPZroRZwlNnP7HJbv
-hBlyB67tWyvFWdSUrqoxlEqVu+NPGTHTXStyZxkWPEzyqvCMWpA026o/jV6REptI
-OtJ2yeshQM/oSXrVa6Yr/t+gV5hsqVsy4sM3U3JuGS+UGWnQj9L3HrDc4FhFugaS
-ne6jSV32ObkHLqmHRVvi/SsJlzz5JFfO8WnQoxab0hdfq7W+RQ=="
+  default = "AAAAB3NzaC1yc2EAAAABJQAAAQEAmuhJuR9by62GlICEhd5wireNcTQVpyXvD6TPxg87X9oDvgzK/0v5PzQs4yc3nNWRfSkbo9KFX1ML/8jmrO6M8yYiKN2RYKWGua0CHDNphYxqE9EfnK6NiJ8k/20ZikH6b0KbRi3e7FYRqF8qjD9NPZroRZwlNnP7HJbvhBlyB67tWyvFWdSUrqoxlEqVu+NPGTHTXStyZxkWPEzyqvCMWpA026o/jV6REptIOtJ2yeshQM/oSXrVa6Yr/t+gV5hsqVsy4sM3U3JuGS+UGWnQj9L3HrDc4FhFugaSne6jSV32ObkHLqmHRVvi/SsJlzz5JFfO8WnQoxab0hdfq7W+RQ=="
   description = "SSH Public Key contents to be used"
 }
 
