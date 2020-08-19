@@ -54,7 +54,12 @@ variable "zone2_subnet2" {
 }
 
 variable "ssh_public_key" {
-  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDJxQaH+pkwq3fs3vZW0basBRZd0/0h9hJvJ45nY0YL8HPl6yX/uJLYaPFIAYEmU45oCBuEi21ijJiLCwFq7A4jZJ1A92ncUulsNdJMh3RF8YcTPjqxQS9rGLJDhwmFY/k3ihKzlBFkcIMf02/oik3/OrNVZAnfI3ACIlz3kcoToMXUTpDXvWZrcHiMJWwkMmrYOIQV/t4pcSmN91AnHJkLtnT1KH1eQh0wKcY4xi3vFBYKTTRcabkwyKKienClhefB5J0xjOXjA4UUMJ8UfO86yJtoo9DqmJHypuwfvD/WdPZZKoqDOCjtOr8gZ81fIrBivlCVkcvk+ZACDRxAJrdbruM2YuZtCkUrQf7KzUa9ZUOZGjZKNF+WkyiUOblShpDAZk2u2FbShf+v6+vxtYrHxoEGdV1NCw/BRceK2Fhphmt/HD/xlssAOLMH8w6fHfQy/IBtd7xdMUT5UqVUROf9DYuHyVj7AfdAtSLejGFIw61IEaCkKmgXVK/lYtom778= mishel.carrion@ibm.com"
+  default = "AAAAB3NzaC1yc2EAAAABJQAAAQEAmuhJuR9by62GlICEhd5wireNcTQVpyXvD6TP
+xg87X9oDvgzK/0v5PzQs4yc3nNWRfSkbo9KFX1ML/8jmrO6M8yYiKN2RYKWGua0C
+HDNphYxqE9EfnK6NiJ8k/20ZikH6b0KbRi3e7FYRqF8qjD9NPZroRZwlNnP7HJbv
+hBlyB67tWyvFWdSUrqoxlEqVu+NPGTHTXStyZxkWPEzyqvCMWpA026o/jV6REptI
+OtJ2yeshQM/oSXrVa6Yr/t+gV5hsqVsy4sM3U3JuGS+UGWnQj9L3HrDc4FhFugaS
+ne6jSV32ObkHLqmHRVvi/SsJlzz5JFfO8WnQoxab0hdfq7W+RQ=="
   description = "SSH Public Key contents to be used"
 }
 
