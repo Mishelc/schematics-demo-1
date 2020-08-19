@@ -4,7 +4,7 @@ data "ibm_resource_group" "resource_group" {
 
 resource "ibm_is_ssh_key" "vpc-mishel" {
   name       = "vpc-mishel"
-  # public_key = "${var.ssh_public_key}"
+  public_key = "${var.ssh_public_key}"
 }
 # Create VPC
 resource "ibm_is_vpc" "vpc1" {
