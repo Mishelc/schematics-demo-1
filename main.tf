@@ -85,7 +85,7 @@ resource "ibm_is_instance" "appinstance1" {
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone1}"
-  keys = ["${ibm_is_ssh_key.ssh1.id}"]
+  keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-apptier.rendered}"
 }
 # App Instance Subnet 1 Zone 2
@@ -99,7 +99,7 @@ resource "ibm_is_instance" "appinstance2" {
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone2}"
-  keys = ["${ibm_is_ssh_key.ssh1.id}"]
+  keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-apptier.rendered}"
 }
 
