@@ -1,6 +1,8 @@
+/*
 data "ibm_resource_group" "resource_group" {
   name = "${var.resource_group}"
 }
+*/
 
 resource "ibm_is_ssh_key" "vpc-mishel" {
   name       = "vpc-mishel"
@@ -9,7 +11,7 @@ resource "ibm_is_ssh_key" "vpc-mishel" {
 # Create VPC
 resource "ibm_is_vpc" "vpc1" {
   name = "${var.vpc_name}"
-  resource_group  = "${data.ibm_resource_group.resource_group.id}"
+  # resource_group  = "${data.ibm_resource_group.resource_group.id}"
 }
 # VPC Zones
 resource "ibm_is_vpc_address_prefix" "vpc-ap1" {
@@ -40,8 +42,8 @@ resource "ibm_is_public_gateway" "gateway2" {
 }
 
 # Subnets Zone 1
-resource "ibm_is_subnet" "app1" {
-  name            = "app1"
+resource "ibm_is_subnet" "public1" {
+  name            = "public1"
   vpc             = "${ibm_is_vpc.vpc1.id}"
   zone            = "${var.zone1}"
   ipv4_cidr_block = "${var.zone1_subnet1}"
@@ -49,8 +51,8 @@ resource "ibm_is_subnet" "app1" {
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap1"]
 }
 
-resource "ibm_is_subnet" "bd1" {
-  name            = "bd1"
+resource "ibm_is_subnet" "private1" {
+  name            = "private1"
   vpc             = "${ibm_is_vpc.vpc1.id}"
   zone            = "${var.zone1}"
   ipv4_cidr_block = "${var.zone1_subnet2}"
@@ -58,8 +60,8 @@ resource "ibm_is_subnet" "bd1" {
 }
 
 # Subnets Zone 2
-resource "ibm_is_subnet" "app2" {
-  name            = "app2"
+resource "ibm_is_subnet" "public2" {
+  name            = "public2"
   vpc             = "${ibm_is_vpc.vpc1.id}"
   zone            = "${var.zone2}"
   ipv4_cidr_block = "${var.zone2_subnet1}"
@@ -67,8 +69,8 @@ resource "ibm_is_subnet" "app2" {
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap2"]
 }
 
-resource "ibm_is_subnet" "bd2" {
-  name            = "bd2"
+resource "ibm_is_subnet" "private2" {
+  name            = "private2"
   vpc             = "${ibm_is_vpc.vpc1.id}"
   zone            = "${var.zone2}"
   ipv4_cidr_block = "${var.zone2_subnet2}"
@@ -81,7 +83,7 @@ resource "ibm_is_instance" "appinstance1" {
   profile = "${var.profile}"
 
   primary_network_interface = {
-    subnet = "${ibm_is_subnet.app1.id}"
+    subnet = "${ibm_is_subnet.public1.id}"
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone1}"
@@ -95,7 +97,7 @@ resource "ibm_is_instance" "appinstance2" {
   profile = "${var.profile}"
 
   primary_network_interface = {
-    subnet = "${ibm_is_subnet.app2.id}"
+    subnet = "${ibm_is_subnet.public2.id}"
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone2}"
