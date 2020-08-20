@@ -104,17 +104,47 @@ resource "ibm_is_instance" "appinstance2" {
   keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-apptier.rendered}"
 }
+# Database Instance Subnet 2 Zone 1
+resource "ibm_is_instance" "dbinstance1" {
+  name    = "dbinstance1"
+  image   = "${var.image}"
+  profile = "${var.profile}"
 
+  primary_network_interface = {
+    subnet = "${ibm_is_subnet.private1.id}"
+  }
+  vpc  = "${ibm_is_vpc.vpc1.id}"
+  zone = "${var.zone1}"
+  keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
+  user_data = "${data.template_cloudinit_config.cloud-init-database.rendered}"
+}
+
+# Database Instance Subnet 2 Zone 2
+resource "ibm_is_instance" "dbinstance2" {
+  name    = "dbinstance2"
+  image   = "${var.image}"
+  profile = "${var.profile}"
+
+  primary_network_interface = {
+    subnet = "${ibm_is_subnet.private2.id}"
+  }
+  vpc  = "${ibm_is_vpc.vpc1.id}"
+  zone = "${var.zone2}"
+  keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
+  user_data = "${data.template_cloudinit_config.cloud-init-database.rendered}"
+}
+
+# Floating IP Application Instance Zone 1
 resource "ibm_is_floating_ip" "floatingip1" {
   name = "fip1"
   target = "${ibm_is_instance.appinstance1.primary_network_interface.0.id}"
 }
-
+# Floating IP Application Instance Zone 2
 resource "ibm_is_floating_ip" "floatingip2" {
   name = "fip2"
   target = "${ibm_is_instance.appinstance2.primary_network_interface.0.id}"
 }
-
+# Security Groups Config
 resource "ibm_is_security_group_rule" "sg1_tcp_rule_22" {
   depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
   group     = "${ibm_is_vpc.vpc1.default_security_group}"
@@ -146,3 +176,4 @@ resource "ibm_is_security_group_rule" "security_group_rule_icmp" {
     type = "8"
   }
 }
+

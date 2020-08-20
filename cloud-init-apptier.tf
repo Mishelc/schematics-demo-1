@@ -9,3 +9,15 @@ packages:
 EOF
   }
 }
+
+data "template_cloudinit_config" "cloud-init-database" {
+  base64_encode = false
+  gzip = false
+  part {
+    content = <<EOF
+#cloud-config
+packages:
+  - mysql-server
+EOF
+  }
+}
