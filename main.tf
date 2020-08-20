@@ -136,3 +136,13 @@ resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
     port_max = "80"
   }
 }
+
+resource "ibm_is_security_group_rule" "security_group_rule_icmp" {
+  depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
+  group     = "${ibm_is_vpc.vpc1.default_security_group}"
+  direction = "inbound"
+  remote    = "0.0.0.0/0"
+  icmp = {
+    code = "20"
+  }
+}
