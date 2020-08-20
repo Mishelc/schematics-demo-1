@@ -143,6 +143,6 @@ resource "ibm_is_security_group_rule" "security_group_rule_icmp" {
   direction = "inbound"
   remote    = "0.0.0.0/0"
   icmp = {
-    code = "20"
+    type = "8"
   }
 }
