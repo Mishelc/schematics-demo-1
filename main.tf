@@ -77,79 +77,14 @@ resource "ibm_is_subnet" "private2" {
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap2"]
 }
 
-# Security Groups Config
-
-resource "ibm_security_group" "sg-app" {
-    name = "sg-app"
-    vpc = "${ibm_is_vpc.vpc1.id}"
-    description = "allow my app traffic"
-}
-
-resource "ibm_is_security_group_rule" "sg1_tcp_rule_22" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  group = "${ibm_security_group.sg-app.id}"
-  direction = "inbound"
-  remote    = "0.0.0.0/0"
-  tcp = {
-    port_min = "22"
-    port_max = "22"
-  }
-  depends_on = ["ibm_is_security_group.sg-app"]
-}
-
-resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  group = "${ibm_security_group.sg-app.id}"
-  direction = "inbound"
-  remote    = "0.0.0.0/0"
-  tcp = {
-    port_min = "80"
-    port_max = "80"
-  }
-  depends_on = ["ibm_is_security_group.sg-app"]
-}
-
-resource "ibm_is_security_group_rule" "sg1_rule_icmp" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  group = "${ibm_security_group.sg-app.id}"
-  direction = "inbound"
-  remote    = "0.0.0.0/0"
-  icmp = {
-    type = "8"
-  }
-  depends_on = ["ibm_is_security_group.sg-app"]
-}
-
-resource "ibm_security_group" "sg-db" {
-    name = "sg-db"
-    vpc = "${ibm_is_vpc.vpc1.id}"
-    #  description = "allow my app traffic"
-}
-
-resource "ibm_is_security_group_rule" "sg2_tcp_rule_22" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  group = "${ibm_security_group.sg-db.id}"
-  direction = "inbound"
-  remote    = "0.0.0.0/0"
-  tcp = {
-    port_min = "22"
-    port_max = "22"
-  }
-  depends_on = ["ibm_is_security_group.sg-db"]
-}
-
-
-
 #App Instance Subnet 1 Zone 1
 resource "ibm_is_instance" "appinstance1" {
-  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
   name    = "appinstance1"
   image   = "${var.image}"
   profile = "${var.profile}"
 
   primary_network_interface = {
     subnet = "${ibm_is_subnet.public1.id}"
-    security_groups = ["${ibm_is_security_group.sg-app.id}"]
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone1}"
@@ -158,14 +93,12 @@ resource "ibm_is_instance" "appinstance1" {
 }
 # App Instance Subnet 1 Zone 2
 resource "ibm_is_instance" "appinstance2" {
-  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
   name    = "appinstance2"
   image   = "${var.image}"
   profile = "${var.profile}"
 
   primary_network_interface = {
     subnet = "${ibm_is_subnet.public2.id}"
-    security_groups = ["${ibm_is_security_group.sg-app.id}"]
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone2}"
@@ -174,14 +107,12 @@ resource "ibm_is_instance" "appinstance2" {
 }
 # Database Instance Subnet 2 Zone 1
 resource "ibm_is_instance" "dbinstance1" {
-  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
   name    = "dbinstance1"
   image   = "${var.image}"
   profile = "${var.profile}"
 
   primary_network_interface = {
     subnet = "${ibm_is_subnet.private1.id}"
-    security_groups = ["${ibm_is_security_group.sg-db.id}"]
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone1}"
@@ -191,14 +122,12 @@ resource "ibm_is_instance" "dbinstance1" {
 
 # Database Instance Subnet 2 Zone 2
 resource "ibm_is_instance" "dbinstance2" {
-  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
   name    = "dbinstance2"
   image   = "${var.image}"
   profile = "${var.profile}"
 
   primary_network_interface = {
     subnet = "${ibm_is_subnet.private2.id}"
-    security_groups = ["${ibm_is_security_group.sg-db.id}"]
   }
   vpc  = "${ibm_is_vpc.vpc1.id}"
   zone = "${var.zone2}"
@@ -217,4 +146,36 @@ resource "ibm_is_floating_ip" "floatingip2" {
   target = "${ibm_is_instance.appinstance2.primary_network_interface.0.id}"
 }
 
+# Security Groups 
 
+resource "ibm_is_security_group_rule" "sg1_tcp_rule_22" {
+  depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
+  group     = "${ibm_is_vpc.vpc1.default_security_group}"
+  direction = "inbound"
+  remote    = "0.0.0.0/0"
+  tcp = {
+    port_min = "22"
+    port_max = "22"
+  }
+}
+
+resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
+  depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
+  group     = "${ibm_is_vpc.vpc1.default_security_group}"
+  direction = "inbound"
+  remote    = "0.0.0.0/0"
+  tcp = {
+    port_min = "80"
+    port_max = "80"
+  }
+}
+
+resource "ibm_is_security_group_rule" "sg1_rule_icmp" {
+  depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
+  group = "${ibm_is_vpc.vpc1.default_security_group}"
+  direction = "inbound"
+  remote    = "0.0.0.0/0"
+  icmp = {
+    type = "8"
+  }
+}
