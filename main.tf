@@ -142,6 +142,7 @@ resource "ibm_is_security_group_rule" "sg2_tcp_rule_22" {
 
 #App Instance Subnet 1 Zone 1
 resource "ibm_is_instance" "appinstance1" {
+  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
   name    = "appinstance1"
   image   = "${var.image}"
   profile = "${var.profile}"
@@ -154,10 +155,10 @@ resource "ibm_is_instance" "appinstance1" {
   zone = "${var.zone1}"
   keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-apptier.rendered}"
-  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
 }
 # App Instance Subnet 1 Zone 2
 resource "ibm_is_instance" "appinstance2" {
+  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
   name    = "appinstance2"
   image   = "${var.image}"
   profile = "${var.profile}"
@@ -170,10 +171,10 @@ resource "ibm_is_instance" "appinstance2" {
   zone = "${var.zone2}"
   keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-apptier.rendered}"
-  depends_on = ["ibm_is_security_group_rule.sg1_tcp_rule_22","ibm_is_security_group_rule.sg1_tcp_rule_80","ibm_is_security_group_rule.sg1_rule_icmp"]
 }
 # Database Instance Subnet 2 Zone 1
 resource "ibm_is_instance" "dbinstance1" {
+  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
   name    = "dbinstance1"
   image   = "${var.image}"
   profile = "${var.profile}"
@@ -186,11 +187,11 @@ resource "ibm_is_instance" "dbinstance1" {
   zone = "${var.zone1}"
   keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-database.rendered}"
-  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
 }
 
 # Database Instance Subnet 2 Zone 2
 resource "ibm_is_instance" "dbinstance2" {
+  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
   name    = "dbinstance2"
   image   = "${var.image}"
   profile = "${var.profile}"
@@ -203,7 +204,6 @@ resource "ibm_is_instance" "dbinstance2" {
   zone = "${var.zone2}"
   keys = ["${ibm_is_ssh_key.vpc-mishel.id}"]
   user_data = "${data.template_cloudinit_config.cloud-init-database.rendered}"
-  depends_on = ["ibm_is_security_group_rule.sg2_tcp_rule_22"]
 }
 
 # Floating IP Application Instance Zone 1
