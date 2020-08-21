@@ -87,7 +87,7 @@ resource "ibm_security_group" "sg-app" {
 
 resource "ibm_is_security_group_rule" "sg1_tcp_rule_22" {
   # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  security_group_id = "${ibm_security_group.sg-app.id}"
+  group = "${ibm_security_group.sg-app.id}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
   tcp = {
@@ -99,7 +99,7 @@ resource "ibm_is_security_group_rule" "sg1_tcp_rule_22" {
 
 resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
   # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  security_group_id = "${ibm_security_group.sg-app.id}"
+  group = "${ibm_security_group.sg-app.id}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
   tcp = {
@@ -111,7 +111,7 @@ resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
 
 resource "ibm_is_security_group_rule" "sg1_rule_icmp" {
   # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  security_group_id = "${ibm_security_group.sg-app.id}"
+  group = "${ibm_security_group.sg-app.id}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
   icmp = {
@@ -128,7 +128,7 @@ resource "ibm_security_group" "sg-db" {
 
 resource "ibm_is_security_group_rule" "sg2_tcp_rule_22" {
   # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
-  security_group_id = "${ibm_security_group.sg-db.id}"
+  group = "${ibm_security_group.sg-db.id}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
   tcp = {
